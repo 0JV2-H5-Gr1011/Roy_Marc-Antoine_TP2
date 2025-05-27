@@ -13,6 +13,8 @@ namespace StarterAssets
 		public bool jump;
 		public bool sprint;
 
+		public bool pickup;
+
 		[Header("Movement Settings")]
 		public bool analogMovement;
 
@@ -43,6 +45,12 @@ namespace StarterAssets
 		{
 			SprintInput(value.isPressed);
 		}
+
+		// MON CODE=============================================================================================
+		public void OnPickup(InputValue value)
+		{
+			PickupInput(value.isPressed);
+		}
 #endif
 
 
@@ -64,6 +72,12 @@ namespace StarterAssets
 		public void SprintInput(bool newSprintState)
 		{
 			sprint = newSprintState;
+		}
+
+		// MON CODE=============================================================================================
+		public void PickupInput(bool newPickupState)
+		{
+			pickup = newPickupState;
 		}
 
 		private void OnApplicationFocus(bool hasFocus)
