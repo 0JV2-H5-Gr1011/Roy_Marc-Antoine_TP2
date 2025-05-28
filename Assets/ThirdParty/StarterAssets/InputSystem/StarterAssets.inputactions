@@ -44,7 +44,7 @@
                 {
                     "name": "pickup",
                     "type": "Button",
-                    "id": "fa854889-00df-4dec-b713-2c1ee9075595",
+                    "id": "335eaa1e-6691-4cd9-94eb-2b1ae4663a4a",
                     "expectedControlType": "Button",
                     "processors": "",
                     "interactions": "",
@@ -230,7 +230,7 @@
                 },
                 {
                     "name": "",
-                    "id": "30812c4a-e4a9-4b27-a21a-2d11757d335d",
+                    "id": "d2a6545f-418f-455b-b474-ed185b8f7180",
                     "path": "<Keyboard>/f",
                     "interactions": "",
                     "processors": "",

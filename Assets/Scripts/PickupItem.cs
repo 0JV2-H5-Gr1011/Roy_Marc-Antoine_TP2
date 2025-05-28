@@ -1,52 +1,69 @@
-using System.Collections;
-using System.Collections.Generic;
-using StarterAssets;
 using UnityEngine;
+using UnityEngine.InputSystem;
+using UnityEngine.UI;
+using TMPro;
+using System.Collections;
+using Unity.Burst.CompilerServices;
+using StarterAssets;
 
 public class PickupItem : MonoBehaviour
 {
-    private bool isPlayerInRange = false;
-    private StarterAssets.StarterAssetsInputs playerInputs;
-    // Start is called before the first frame update
-    void Start()
+    private StarterAssetsInputs _input;
+    private int currentItems = 0;
+    private int totalCollected = 0;
+    public TMP_Text conteurItemsText;
+    private bool canPickup = true;
+
+    private void Awake()
     {
-        playerInputs = FindObjectOfType<StarterAssets.StarterAssetsInputs>();
+        _input = FindAnyObjectByType<StarterAssetsInputs>();    
     }
 
-    // Update is called once per frame
-    void Update()
+    private void Start()
     {
-        if (playerInputs != null && playerInputs.pickup && isPlayerInRange)
-        {
-            TryPickup(playerInputs.pickup);
-        }
-
+        UpdateCounterUI();
     }
 
-    private void OnTriggerEnter(Collider other)
+    private void Update()
     {
-        if (other.gameObject.CompareTag("PickupRange"))
+        if (_input.pickup && canPickup)
         {
-            isPlayerInRange = true;
-            Debug.Log("isPlayerInRange = true");
+            TryPickupItem();
+            _input.pickup = false;
         }
     }
 
-    private void OnTriggerExit(Collider other)
+    private void TryPickupItem()
     {
-        if (other.gameObject.CompareTag("PickupRange"))
+        Collider[] trashItems = Physics.OverlapSphere(transform.position, 1f);
+        foreach (Collider trash in trashItems)
         {
-            isPlayerInRange = false;
-            Debug.Log("isPlayerInRange = false");
+            if (trash.CompareTag("TrashItem") && currentItems < 3)
+            {
+                currentItems++;
+                totalCollected++;
+
+                Debug.Log("Picked up item! current count: " + currentItems);
+
+                Destroy(trash.gameObject);
+                UpdateCounterUI();
+                StartCoroutine(PickupCooldown());
+
+                break;
+            }
         }
     }
 
-    public void TryPickup(bool pickupPressed)
+    private IEnumerator PickupCooldown()
     {
-        if (pickupPressed && isPlayerInRange)
-        {
-            Debug.Log("Item picked up");
-            gameObject.SetActive(false);
-        }
+        canPickup = false;
+        yield return new WaitForSeconds(2f);
+        canPickup = true;
+        Debug.Log("cooldown done!");
+    }
+
+    private void UpdateCounterUI()
+    {
+        conteurItemsText.text = "Items : " + currentItems + "/3";
     }
 }

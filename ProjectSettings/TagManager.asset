@@ -6,6 +6,8 @@ TagManager:
   tags:
   - CinemachineTarget
   - PickupRange
+  - TrashItem
+  - Counter1
   layers:
   - Default
   - TransparentFX
