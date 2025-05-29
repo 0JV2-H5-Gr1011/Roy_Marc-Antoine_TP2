@@ -9,6 +9,6 @@ public class AfficherNomJoueur : MonoBehaviour
 
     void Start()
     {
-        texteNom.text = NomJoueurManager.nomJoueur;
+        texteNom.text = NomJoueur.nomJoueur;
     }
 }

@@ -11,7 +11,7 @@ public class LancerJeu : MonoBehaviour
 
     public void LancerNiveau1()
     {
-        NomJoueurManager.nomJoueur = inputNom.text;
+        NomJoueur.nomJoueur = inputNom.text;
         SceneManager.LoadScene("Niveau1");
     }
 }
