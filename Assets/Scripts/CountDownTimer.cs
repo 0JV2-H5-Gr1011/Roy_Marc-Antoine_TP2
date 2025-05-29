@@ -7,7 +7,7 @@ using UnityEngine.SceneManagement;
 public class CountDownTimer : MonoBehaviour
 {
     public TMP_Text timer;
-    private float timeRemain = 60f;
+    private float timeRemain = 90f;
     private bool timerRun = true;
 
     private void Update()
