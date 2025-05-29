@@ -9,8 +9,20 @@ EditorBuildSettings:
     path: Assets/Scenes/SampleScene.unity
     guid: 99c9720ab356a0642a771bea13969a05
   - enabled: 1
+    path: Assets/Scenes/accueil.unity
+    guid: 1d05f209b1855414ab246c65b5a2f5db
+  - enabled: 1
     path: Assets/Scenes/Niveau1.unity
     guid: 20323552b1e94415fa6bd7ee8aeadbdc
+  - enabled: 1
+    path: Assets/Scenes/Niveau2.unity
+    guid: b09da2611a06cc04596fa3d06633d81a
+  - enabled: 1
+    path: Assets/Scenes/finPerdu.unity
+    guid: 3f6d0bb3d6fb250479972b2e2340556b
+  - enabled: 1
+    path: "Assets/Scenes/finGagn\xE9.unity"
+    guid: 7bb5e668fc0141649b152cd5f73d8dc6
   m_configObjects:
     com.unity.input.settings: {fileID: 11400000, guid: 9e7be553448fa2546aea5752021cbcf7,
       type: 2}

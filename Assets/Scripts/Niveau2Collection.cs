@@ -6,6 +6,7 @@ using TMPro;
 using Unity.Burst.CompilerServices;
 using StarterAssets;
 using Unity.Mathematics;
+using UnityEngine.SceneManagement;
 
 public class Niveau2Collection : MonoBehaviour
 {
@@ -16,7 +17,7 @@ public class Niveau2Collection : MonoBehaviour
     private bool canPickup = true;
     private List<GameObject> collectedItems = new List<GameObject>();
     public GameObject Poubelle;
-//--------------------------------------------------------------------------------------------------------
+    //--------------------------------------------------------------------------------------------------------
     private void Start()
     {
         UpdateCounterUI();
@@ -25,10 +26,11 @@ public class Niveau2Collection : MonoBehaviour
 
     private void Update()
     {
-        TryPickupItem(); 
+        TryPickupItem();
         CheckForTrashCan();
+        CheckForLevelTransition();
     }
-//--------------------------------------------------------------------------------------------------------
+    //--------------------------------------------------------------------------------------------------------
     private void TryPickupItem()
     {
         if (!canPickup) return;
@@ -43,7 +45,7 @@ public class Niveau2Collection : MonoBehaviour
                 Destroy(trash.gameObject);
                 UpdateCounterUI();
 
-                StartCoroutine(PickupCooldown());  
+                StartCoroutine(PickupCooldown());
                 break;
             }
         }
@@ -51,11 +53,11 @@ public class Niveau2Collection : MonoBehaviour
 
     private IEnumerator PickupCooldown()
     {
-        canPickup = false; 
-        yield return new WaitForSeconds(1f);  
+        canPickup = false;
+        yield return new WaitForSeconds(1f);
         canPickup = true;
     }
-//--------------------------------------------------------------------------------------------------------
+    //--------------------------------------------------------------------------------------------------------
     private void UpdateCounterUI()
     {
         conteurItemsText.text = "Items : " + currentItems + "/3";
@@ -65,7 +67,7 @@ public class Niveau2Collection : MonoBehaviour
     {
         score.text = "Items total : " + totalCollected + "/12";
     }
-//--------------------------------------------------------------------------------------------------------
+    //--------------------------------------------------------------------------------------------------------
     public void DepositItems()
     {
         totalCollected += collectedItems.Count;
@@ -84,6 +86,19 @@ public class Niveau2Collection : MonoBehaviour
             {
                 DepositItems();
                 return;
+            }
+        }
+    }
+//--------------------------------------------------------------------------------------------------------  
+    private void CheckForLevelTransition()
+    {
+        Collider[] nearbyObjects = Physics.OverlapSphere(transform.position, 1f);  
+        foreach (Collider obj in nearbyObjects)
+        {
+            if (obj.CompareTag("victoire") && totalCollected >= 12) 
+            {
+                SceneManager.LoadScene("finGagné");  
+                return;  
             }
         }
     }

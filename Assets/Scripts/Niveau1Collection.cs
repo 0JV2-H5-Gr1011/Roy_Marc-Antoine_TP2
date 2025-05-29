@@ -89,15 +89,14 @@ public class Niveau1Collection : MonoBehaviour
             }
         }
     }
-    //--------------------------------------------------------------------------------------------------------  
+//--------------------------------------------------------------------------------------------------------  
     private void CheckForLevelTransition()
     {
-        Collider[] nearbyObjects = Physics.OverlapSphere(transform.position, 1f);  // ✅ Sphere detects nearby objects
+        Collider[] nearbyObjects = Physics.OverlapSphere(transform.position, 1f);  
         foreach (Collider obj in nearbyObjects)
         {
             if (obj.CompareTag("Lvl2") && totalCollected >= 6) 
             {
-                Debug.Log("🚀 Entering Level 2...");
                 SceneManager.LoadScene("Niveau2");  
                 return;  
             }

@@ -9,6 +9,8 @@ TagManager:
   - TrashItem
   - TrashCan
   - Lvl2
+  - slime
+  - victoire
   layers:
   - Default
   - TransparentFX
