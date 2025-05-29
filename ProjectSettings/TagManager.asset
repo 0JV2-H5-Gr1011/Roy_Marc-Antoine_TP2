@@ -8,6 +8,7 @@ TagManager:
   - PickupRange
   - TrashItem
   - TrashCan
+  - Lvl2
   layers:
   - Default
   - TransparentFX

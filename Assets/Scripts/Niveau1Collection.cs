@@ -1,16 +1,15 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.InputSystem;
 using UnityEngine.UI;
 using TMPro;
 using Unity.Burst.CompilerServices;
 using StarterAssets;
 using Unity.Mathematics;
+using UnityEngine.SceneManagement;
 
-public class PickupItem : MonoBehaviour
+public class Niveau1Collection : MonoBehaviour
 {
-    private StarterAssetsInputs _input;
     private int currentItems = 0;
     private int totalCollected = 0;
     public TMP_Text conteurItemsText;
@@ -18,12 +17,7 @@ public class PickupItem : MonoBehaviour
     private bool canPickup = true;
     private List<GameObject> collectedItems = new List<GameObject>();
     public GameObject Poubelle;
-    //--------------------------------------------------------------------------------------------------------
-    private void Awake()
-    {
-        _input = FindAnyObjectByType<StarterAssetsInputs>();
-    }
-
+//--------------------------------------------------------------------------------------------------------
     private void Start()
     {
         UpdateCounterUI();
@@ -32,17 +26,15 @@ public class PickupItem : MonoBehaviour
 
     private void Update()
     {
-        if (_input.pickup && canPickup)
-        {
-            TryPickupItem();
-            _input.pickup = false;
-        }
-
+        TryPickupItem();
         CheckForTrashCan();
+        CheckForLevelTransition();
     }
-    //--------------------------------------------------------------------------------------------------------
+//--------------------------------------------------------------------------------------------------------
     private void TryPickupItem()
     {
+        if (!canPickup) return;
+
         Collider[] trashItems = Physics.OverlapSphere(transform.position, 1f);
         foreach (Collider trash in trashItems)
         {
@@ -50,11 +42,10 @@ public class PickupItem : MonoBehaviour
             {
                 currentItems++;
                 collectedItems.Add(trash.gameObject);
-
                 Destroy(trash.gameObject);
                 UpdateCounterUI();
-                StartCoroutine(PickupCooldown());
 
+                StartCoroutine(PickupCooldown());
                 break;
             }
         }
@@ -63,10 +54,10 @@ public class PickupItem : MonoBehaviour
     private IEnumerator PickupCooldown()
     {
         canPickup = false;
-        yield return new WaitForSeconds(0.5f);
+        yield return new WaitForSeconds(1f);
         canPickup = true;
     }
-    //--------------------------------------------------------------------------------------------------------
+//--------------------------------------------------------------------------------------------------------
     private void UpdateCounterUI()
     {
         conteurItemsText.text = "Items : " + currentItems + "/3";
@@ -74,17 +65,9 @@ public class PickupItem : MonoBehaviour
 
     private void UpdateTotalCollectedUI()
     {
-        if (score != null)
-        {
-            score.text = "Items total : " + totalCollected + "/6";
-            Debug.Log("UI Updated: " + score.text);
-        }
-        else
-        {
-            Debug.LogError("❌ UI score text missing! Assign TMP_Text in Inspector.");
-        }
+        score.text = "Items total : " + totalCollected + "/6";
     }
-    //--------------------------------------------------------------------------------------------------------
+//--------------------------------------------------------------------------------------------------------
     public void DepositItems()
     {
         totalCollected += collectedItems.Count;
@@ -97,13 +80,26 @@ public class PickupItem : MonoBehaviour
     private void CheckForTrashCan()
     {
         Collider[] nearbyObjects = Physics.OverlapSphere(transform.position, 1f);
-
-        foreach (Collider obj in nearbyObjects)  
+        foreach (Collider obj in nearbyObjects)
         {
             if (obj.gameObject.name == "Poubelle")
             {
                 DepositItems();
                 return;
+            }
+        }
+    }
+    //--------------------------------------------------------------------------------------------------------  
+    private void CheckForLevelTransition()
+    {
+        Collider[] nearbyObjects = Physics.OverlapSphere(transform.position, 1f);  // ✅ Sphere detects nearby objects
+        foreach (Collider obj in nearbyObjects)
+        {
+            if (obj.CompareTag("Lvl2") && totalCollected >= 6) 
+            {
+                Debug.Log("🚀 Entering Level 2...");
+                SceneManager.LoadScene("Niveau2");  
+                return;  
             }
         }
     }

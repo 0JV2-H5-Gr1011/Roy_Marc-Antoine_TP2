@@ -13,14 +13,14 @@ namespace StarterAssets
 		public bool jump;
 		public bool sprint;
 
-		public bool pickup;
-
 		[Header("Movement Settings")]
 		public bool analogMovement;
 
 		[Header("Mouse Cursor Settings")]
 		public bool cursorLocked = true;
 		public bool cursorInputForLook = true;
+
+		public bool pickup;
 
 #if ENABLE_INPUT_SYSTEM
 		public void OnMove(InputValue value)
@@ -45,12 +45,6 @@ namespace StarterAssets
 		{
 			SprintInput(value.isPressed);
 		}
-
-		// MON CODE=============================================================================================
-		public void OnPickup(InputValue value)
-		{
-			PickupInput(value.isPressed);
-		}
 #endif
 
 
@@ -73,13 +67,7 @@ namespace StarterAssets
 		{
 			sprint = newSprintState;
 		}
-
-		// MON CODE=============================================================================================
-		public void PickupInput(bool newPickupState)
-		{
-			pickup = newPickupState;
-		}
-
+		
 		private void OnApplicationFocus(bool hasFocus)
 		{
 			SetCursorState(cursorLocked);
